@@ -1,0 +1,447 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+:root {
+  /* Colors based on reference */
+  --color-primary: #5C9496; /* Teal */
+  --color-dark: #546170; /* Slate Blue / Charcoal */
+  --color-accent-light: #9CBBD1; /* Light Blue */
+  --color-accent-sage: #8CAE97; /* Sage Green */
+  --color-background: #F8F6F0; /* Soft Off-White / Cream */
+  --color-sand: #EFE4D0; /* Pale Sand */
+  --color-gold: #C2AB83; /* Soft Gold/Beige logo text color */
+  --color-surface: #FFFFFF;
+  --color-text: #333333;
+  --color-text-light: #666666;
+
+  /* Typography */
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 8rem;
+
+  /* Other */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 24px rgba(0,0,0,0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  height: 100vh;
+  margin: 0;
+}
+
+#root {
+  height: 100%;
+}
+
+.app-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.bg-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: -2;
+}
+
+/* Animated "Wave" Overlay */
+.bg-layer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  
+  /* Much brighter overlapping sweeps simulating wave crests */
+  background: 
+    linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.5) 30%, transparent 40%),
+    linear-gradient(65deg, transparent 40%, rgba(156, 187, 209, 0.4) 50%, transparent 60%);
+  background-size: 200% 200%;
+  
+  /* Fade it out on the top half gently */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 25%, black 60%);
+  mask-image: linear-gradient(to bottom, transparent 25%, black 60%);
+  
+  animation: wavesMotion 8s infinite linear;
+  mix-blend-mode: soft-light;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes wavesMotion {
+  0% { background-position: 200% 50%, 0% 100%; }
+  100% { background-position: -50% 50%, 200% 100%; }
+}
+
+.bg-layer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(239, 228, 208, 0.2) 0%, rgba(248, 246, 240, 0.6) 100%);
+  z-index: -1;
+}
+
+.app-content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Carousel Styles */
+.carousel-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  padding: 0 var(--space-xl);
+}
+
+.carousel-viewport {
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.carousel-slide {
+  min-width: 100%;
+  flex-shrink: 0;
+  padding: 1rem;
+}
+
+.carousel-card {
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  min-height: 55vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.slide-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-title {
+  font-size: 4.5rem;
+  margin-bottom: 1rem;
+  color: var(--color-primary);
+  text-align: center;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+  font-weight: 500;
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+.hero-body {
+  font-size: 1.2rem;
+  color: var(--color-text);
+  margin-bottom: 3rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.hero-actions .btn {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+}
+
+.carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-dark);
+  box-shadow: var(--shadow-md);
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.carousel-nav:hover {
+  background: white;
+  transform: translateY(-50%) scale(1.05);
+  color: var(--color-primary);
+}
+
+.carousel-nav.prev {
+  left: 0;
+}
+
+.carousel-nav.next {
+  right: 0;
+}
+
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.indicator.active {
+  background: var(--color-primary);
+  transform: scale(1.2);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--color-dark);
+  line-height: 1.2;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--color-primary);
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+/* Glassmorphism helpers */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Base Component Styles */
+.section {
+  padding: var(--space-xl) 0;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-full);
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-outline {
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.text-gold {
+  color: var(--color-gold);
+}
+
+.text-teal {
+  color: var(--color-primary);
+}
+
+/* Gallery Transitions */
+.gallery-slide {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: calc(100% - 160px); /* Padding for arrows */
+  max-height: 75vh;
+  object-fit: contain;
+  border-radius: 24px;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.gallery-slide.active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 2;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+}
+
+.gallery-slide.outgoing {
+  z-index: 1;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+  pointer-events: none;
+}
+
+/* NEXT: Clicked right. New from right, old to left */
+.gallery-slide.next-in {
+  animation-name: slideInFromRight;
+}
+.gallery-slide.next-out {
+  animation-name: slideOutToLeft;
+}
+
+/* PREV: Clicked left. New from left, old to right */
+.gallery-slide.prev-in {
+  animation-name: slideInFromLeft;
+}
+.gallery-slide.prev-out {
+  animation-name: slideOutToRight;
+}
+
+/* INITIAL LOAD */
+.gallery-slide.initial-fade {
+  animation-name: fadeInCenter;
+}
+
+@keyframes slideInFromRight {
+  from { opacity: 0; transform: translate(-45%, -50%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+@keyframes slideOutToLeft {
+  from { opacity: 1; transform: translate(-50%, -50%); }
+  to { opacity: 0; transform: translate(-55%, -50%); }
+}
+
+@keyframes slideInFromLeft {
+  from { opacity: 0; transform: translate(-55%, -50%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+@keyframes slideOutToRight {
+  from { opacity: 1; transform: translate(-50%, -50%); }
+  to { opacity: 0; transform: translate(-45%, -50%); }
+}
+
+@keyframes fadeInCenter {
+  from { opacity: 0; transform: translate(-50%, -50%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+/* Dark Mode Overrides */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-dark: #F8F6F0; /* Soft off-white to replace slate */
+    --color-background: #111827; /* Dark slate boundary */
+    --color-surface: #1F2937;
+    --color-text: #F3F4F6;
+    --color-text-light: #9CA3AF;
+  }
+
+  /* Make glass panes dark and highly translucent */
+  .glass {
+    background: rgba(17, 24, 39, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.08); /* Lighter border for definition against dark background */
+  }
+
+  /* Tint the static background image to look like a dusk/night version of the beach */
+  .bg-layer::after {
+    background: linear-gradient(to bottom, rgba(17, 24, 39, 0.6) 0%, rgba(17, 24, 39, 0.95) 100%);
+  }
+
+  /* Darken indicators slightly so they don't blow out */
+  .indicator {
+    background: rgba(255, 255, 255, 0.3);
+  }
+  
+  .indicator.active {
+    background: var(--color-primary);
+  }
+}
