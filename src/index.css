@@ -1,7 +1,5 @@
-/* ─── Google Fonts ─────────────────────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 
-/* ─── Design Tokens ────────────────────────────────────────────────────────── */
 :root {
   --color-primary:      #5C9496;
   --color-dark:         #546170;
@@ -33,16 +31,10 @@
   --shadow-lg: 0 12px 24px rgba(0,0,0,0.1);
 }
 
-/* ─── Reset ────────────────────────────────────────────────────────────────── */
-*, *::before, *::after {
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
-
-/* ─── Base ─────────────────────────────────────────────────────────────────── */
-html {
-  scroll-behavior: smooth;
 }
 
 body {
@@ -52,11 +44,73 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  height: 100vh;
+  margin: 0;
 }
 
-#root,
+#root {
+  height: 100%;
+}
+
 .app-wrapper {
+  position: relative;
   width: 100%;
+  height: 100%;
+}
+
+.bg-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: -2;
+}
+
+.bg-layer::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.5) 30%, transparent 40%),
+    linear-gradient(65deg, transparent 40%, rgba(156,187,209,0.4) 50%, transparent 60%);
+  background-size: 200% 200%;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 25%, black 60%);
+  mask-image: linear-gradient(to bottom, transparent 25%, black 60%);
+  animation: wavesMotion 8s infinite linear;
+  mix-blend-mode: soft-light;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes wavesMotion {
+  0%   { background-position: 200% 50%, 0% 100%; }
+  100% { background-position: -50% 50%, 200% 100%; }
+}
+
+.bg-layer::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(to bottom, rgba(239,228,208,0.2) 0%, rgba(248,246,240,0.6) 100%);
+  z-index: -1;
+}
+
+.app-content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -71,9 +125,7 @@ a {
   transition: color 0.3s ease;
 }
 
-a:hover {
-  color: var(--color-primary);
-}
+a:hover { color: var(--color-primary); }
 
 button {
   font-family: var(--font-body);
@@ -82,7 +134,6 @@ button {
   background: none;
 }
 
-/* ─── Layout Helpers ───────────────────────────────────────────────────────── */
 .container {
   width: 100%;
   max-width: 1200px;
@@ -90,19 +141,15 @@ button {
   padding: 0 var(--space-md);
 }
 
-.section {
-  padding: var(--space-xl) 0;
-}
-
-/* ─── Glassmorphism ────────────────────────────────────────────────────────── */
 .glass {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255,255,255,0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255,255,255,0.3);
 }
 
-/* ─── Buttons ──────────────────────────────────────────────────────────────── */
+.section { padding: var(--space-xl) 0; }
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -111,38 +158,28 @@ button {
   border-radius: var(--radius-full);
   font-weight: 500;
   transition: all 0.3s ease;
-  cursor: pointer;
 }
 
-.btn-primary {
-  background-color: var(--color-primary);
-  color: white;
-}
-
+.btn-primary { background-color: var(--color-primary); color: white; }
 .btn-primary:hover {
   background-color: var(--color-dark);
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
-  color: white;
 }
 
-.btn-outline {
-  border: 1px solid var(--color-primary);
-  color: var(--color-primary);
-}
+.btn-outline { border: 1px solid var(--color-primary); color: var(--color-primary); }
+.btn-outline:hover { background-color: var(--color-primary); color: white; }
 
-.btn-outline:hover {
-  background-color: var(--color-primary);
-  color: white;
-}
+.text-gold { color: var(--color-gold); }
+.text-teal { color: var(--color-primary); }
 
-/* ─── Sketch / Hand-drawn Button (Header) ──────────────────────────────────── */
+/* ─── Sketch Button (Header) ───────────────────────────────────────────────── */
 .sketch-btn {
   font-family: 'Playfair Display', serif;
   font-size: 0.95rem;
   font-style: italic;
   color: #3d4a56;
-  background: rgba(248, 246, 240, 0.88);
+  background: rgba(248,246,240,0.88);
   border: 1.5px solid #546170;
   border-radius: 2px;
   padding: 0.65rem 1.6rem;
@@ -150,29 +187,15 @@ button {
   text-decoration: none;
   display: inline-block;
   cursor: pointer;
-  box-shadow: 2px 2px 0px rgba(84, 97, 112, 0.35);
+  box-shadow: 2px 2px 0px rgba(84,97,112,0.35);
   transition: box-shadow 0.15s ease, transform 0.15s ease;
   white-space: nowrap;
 }
 
 .sketch-btn:hover {
-  box-shadow: 3px 3px 0px rgba(84, 97, 112, 0.55);
+  box-shadow: 3px 3px 0px rgba(84,97,112,0.55);
   transform: translate(-1px, -1px);
   color: #3d4a56;
-}
-
-/* ─── Typography Utilities ─────────────────────────────────────────────────── */
-.text-gold { color: var(--color-gold); }
-.text-teal { color: var(--color-primary); }
-
-/* ─── Fade-in Animation (Hero) ─────────────────────────────────────────────── */
-.fade-in {
-  animation: fadeInUp 0.9s ease-out both;
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ─── Carousel ─────────────────────────────────────────────────────────────── */
@@ -180,7 +203,7 @@ button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255,255,255,0.8);
   border-radius: 50%;
   width: 50px;
   height: 50px;
@@ -191,8 +214,6 @@ button {
   box-shadow: var(--shadow-md);
   z-index: 10;
   transition: all 0.2s ease;
-  border: none;
-  cursor: pointer;
 }
 
 .carousel-nav:hover {
@@ -215,11 +236,10 @@ button {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(0,0,0,0.1);
   transition: all 0.3s ease;
   padding: 0;
-  cursor: pointer;
 }
 
 .indicator.active {
@@ -297,22 +317,26 @@ button {
   }
 
   .glass {
-    background: rgba(17, 24, 39, 0.75);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(17,24,39,0.75);
+    border: 1px solid rgba(255,255,255,0.08);
   }
 
-  .indicator { background: rgba(255, 255, 255, 0.25); }
+  .bg-layer::after {
+    background: linear-gradient(to bottom, rgba(17,24,39,0.6) 0%, rgba(17,24,39,0.95) 100%);
+  }
+
+  .indicator { background: rgba(255,255,255,0.3); }
   .indicator.active { background: var(--color-primary); }
 
   .sketch-btn {
-    background: rgba(17, 24, 39, 0.82);
+    background: rgba(17,24,39,0.82);
     color: #d4dde6;
     border-color: #9CBBD1;
-    box-shadow: 2px 2px 0px rgba(156, 187, 209, 0.35);
+    box-shadow: 2px 2px 0px rgba(156,187,209,0.35);
   }
 
   .sketch-btn:hover {
-    box-shadow: 3px 3px 0px rgba(156, 187, 209, 0.55);
+    box-shadow: 3px 3px 0px rgba(156,187,209,0.55);
     color: #d4dde6;
   }
 }
