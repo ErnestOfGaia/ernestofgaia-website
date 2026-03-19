@@ -1,90 +1,96 @@
-import React from 'react';
-import { Bot } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+
+// ─── CONFIGURE YOUR SMS NUMBER HERE ────────────────────────────────────────
+// Replace with your phone number in E.164 format, e.g. "+15551234567"
+const SMS_NUMBER = '+1YOURNUMBER';
+// ───────────────────────────────────────────────────────────────────────────
 
 const Header: React.FC = () => {
-  const scrollTo = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  const [hovered, setHovered] = useState(false);
+
+  // Detect and react to the OS dark/light mode preference
+  const [isDark, setIsDark] = useState<boolean>(
+    () => window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    const handler = (e: MediaQueryListEvent) => setIsDark(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  const sketchSrc = isDark ? '/header-sketch-dark.png' : '/header-sketch.png';
 
   return (
     <header
-      className="header glass"
-      style={{ position: 'sticky', top: 0, zIndex: 100, padding: '1rem 0' }}
+      aria-label="Site header"
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '260px',
+        overflow: 'hidden',
+      }}
     >
+      {/*
+        Sketch image — flipped horizontally so the portrait (originally on
+        the right) appears on the top-left of the header.
+        Light mode → public/header-sketch.png
+        Dark mode  → public/header-sketch-dark.png
+      */}
       <div
-        className="container"
-        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-      >
-        {/* Logo Section */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <div
-            style={{
-              backgroundColor: 'var(--color-primary)',
-              color: 'white',
-              padding: '0.5rem',
-              borderRadius: '50%',
-            }}
-          >
-            <Bot size={24} />
-          </div>
-          <div>
-            <h1
-              style={{
-                fontSize: '1.5rem',
-                margin: 0,
-                color: 'var(--color-dark)',
-                fontWeight: 600,
-              }}
-            >
-              Ernest <span className="text-gold">Of Gaia</span>
-            </h1>
-          </div>
-        </div>
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `url(${sketchSrc})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center top',
+          transform: 'scaleX(-1)',
+          transition: 'background-image 0.3s ease',
+        }}
+      />
 
-        {/* Navigation */}
-        <nav
-          role="navigation"
-          aria-label="Main navigation"
-          style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}
+      {/* Soft paper-tone vignette — fades right edge without washing out the art */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: isDark
+            ? 'linear-gradient(to right, rgba(30,42,56,0.08) 0%, rgba(30,42,56,0.15) 55%, rgba(30,42,56,0.55) 100%),' +
+              'linear-gradient(to bottom, rgba(30,42,56,0.0) 0%, rgba(30,42,56,0.35) 100%)'
+            : 'linear-gradient(to right, rgba(248,246,240,0.08) 0%, rgba(248,246,240,0.15) 55%, rgba(248,246,240,0.55) 100%),' +
+              'linear-gradient(to bottom, rgba(248,246,240,0.0) 0%, rgba(248,246,240,0.35) 100%)',
+        }}
+      />
+
+      {/* Button — sits bottom-right in the open landscape area */}
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 1,
+          height: '100%',
+          display: 'flex',
+          alignItems: 'flex-end',
+          justifyContent: 'flex-end',
+          padding: '2rem 2.5rem',
+        }}
+      >
+        <a
+          href={`sms:${SMS_NUMBER}`}
+          className="sketch-btn"
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          style={{
+            boxShadow: hovered
+              ? '3px 3px 0px rgba(84, 97, 112, 0.55)'
+              : '2px 2px 0px rgba(84, 97, 112, 0.35)',
+            transform: hovered ? 'translate(-1px, -1px)' : 'translate(0, 0)',
+          }}
         >
-          <button
-            onClick={() => scrollTo('services')}
-            style={{
-              fontWeight: 500,
-              color: 'var(--color-text-light)',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              fontSize: '1rem',
-              padding: 0,
-            }}
-          >
-            Offerings
-          </button>
-          <button
-            onClick={() => scrollTo('about')}
-            style={{
-              fontWeight: 500,
-              color: 'var(--color-text-light)',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              fontSize: '1rem',
-              padding: 0,
-            }}
-          >
-            Philosophy
-          </button>
-          <button
-            onClick={() => scrollTo('contact')}
-            className="btn btn-primary"
-          >
-            Book a Session
-          </button>
-        </nav>
+          Leave a text message
+        </a>
       </div>
     </header>
   );

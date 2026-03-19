@@ -16,7 +16,7 @@ COPY . .
 RUN npm run build
 
 # ─── Stage 2: Serve ───────────────────────────────────────────────────────────
-FROM nginx:stable-alpine AS production
+FROM nginx:alpine AS production
 
 # Remove the default nginx page
 RUN rm -rf /usr/share/nginx/html/*
