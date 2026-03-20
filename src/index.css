@@ -378,3 +378,178 @@ button {
     color: #d4dde6;
   }
 }
+
+/* ─── Mobile Layout ────────────────────────────────────────────────────────── */
+.app-wrapper.mobile body,
+.app-wrapper.mobile {
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent scroll on mobile */
+.app-wrapper.mobile ~ * { overflow: hidden; }
+
+/* ─── Mobile Carousel ──────────────────────────────────────────────────────── */
+.mobile-carousel-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+}
+
+.mobile-slides-area {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mobile-slide {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: calc(100% - 2rem);
+  max-height: calc(100% - 1rem);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 20px;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.mobile-slide.active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 2;
+  animation-duration: 0.65s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: both;
+}
+
+.mobile-slide.outgoing {
+  z-index: 1;
+  pointer-events: none;
+  animation-duration: 0.65s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: both;
+}
+
+/* Next: new slide rises from below, old slide exits upward */
+.mobile-slide.mobile-next-in  { animation-name: mobileSlideInFromBottom; }
+.mobile-slide.mobile-next-out { animation-name: mobileSlideOutToTop; }
+
+/* Prev: new slide drops from above, old slide exits downward */
+.mobile-slide.mobile-prev-in  { animation-name: mobileSlideInFromTop; }
+.mobile-slide.mobile-prev-out { animation-name: mobileSlideOutToBottom; }
+
+/* Initial load */
+.mobile-slide.initial-fade { animation-name: fadeInCenter; animation-duration: 1.2s; }
+
+@keyframes mobileSlideInFromBottom {
+  from { opacity: 0; transform: translate(-50%, -40%); }
+  to   { opacity: 1; transform: translate(-50%, -50%); }
+}
+@keyframes mobileSlideOutToTop {
+  from { opacity: 1; transform: translate(-50%, -50%); }
+  to   { opacity: 0; transform: translate(-50%, -60%); }
+}
+@keyframes mobileSlideInFromTop {
+  from { opacity: 0; transform: translate(-50%, -60%); }
+  to   { opacity: 1; transform: translate(-50%, -50%); }
+}
+@keyframes mobileSlideOutToBottom {
+  from { opacity: 1; transform: translate(-50%, -50%); }
+  to   { opacity: 0; transform: translate(-50%, -40%); }
+}
+
+/* ─── Mobile Nav Arrows ────────────────────────────────────────────────────── */
+.mobile-carousel-nav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-dark);
+  box-shadow: var(--shadow-md);
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.mobile-carousel-nav.up   { top: 0.6rem; }
+.mobile-carousel-nav.down { bottom: 0.6rem; }
+
+.mobile-carousel-nav:hover {
+  background: white;
+  color: var(--color-primary);
+}
+
+.mobile-carousel-nav:active {
+  transform: translateX(-50%) scale(0.95);
+}
+
+/* ─── Mobile Dot Indicators ────────────────────────────────────────────────── */
+.mobile-indicators {
+  position: absolute;
+  right: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  z-index: 10;
+}
+
+.mobile-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  padding: 0;
+  cursor: pointer;
+}
+
+.mobile-dot.active {
+  background: var(--color-primary);
+  transform: scale(1.3);
+}
+
+/* ─── Mobile Header tweaks ─────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Tighter header padding on small screens */
+  .app-wrapper.mobile .sketch-btn {
+    font-size: 0.82rem;
+    padding: 0.55rem 1.1rem;
+  }
+}
+
+/* Dark mode: mobile nav buttons */
+@media (prefers-color-scheme: dark) {
+  .mobile-carousel-nav {
+    background: rgba(17, 24, 39, 0.75);
+    color: #d4dde6;
+  }
+  .mobile-carousel-nav:hover {
+    background: rgba(31, 41, 55, 0.92);
+    color: var(--color-accent-light);
+  }
+  .mobile-dot { background: rgba(255, 255, 255, 0.3); }
+  .mobile-dot.active { background: var(--color-primary); }
+}

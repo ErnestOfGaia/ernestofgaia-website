@@ -26,6 +26,8 @@ declare module 'lucide-react' {
   export const MapPin: LucideIcon;
   export const ChevronLeft: LucideIcon;
   export const ChevronRight: LucideIcon;
+  export const ChevronUp: LucideIcon;
+  export const ChevronDown: LucideIcon;
   export const Instagram: LucideIcon;
   export const Twitter: LucideIcon;
   export const Linkedin: LucideIcon;
