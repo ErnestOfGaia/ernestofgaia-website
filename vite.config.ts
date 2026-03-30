@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   base: '/',
   preview: {
-    allowedHosts: ['ernestofgaia.xyz', 'www.ernestofgaia.xyz', 'mobile.ernestofgaia.xyz'],
+    allowedHosts: ['ernestofgaia.xyz', 'www.ernestofgaia.xyz', 'mobile.ernestofgaia.xyz', 'mvp.ernestofgaia.xyz'],
   },
   build: {
     outDir: 'dist',
